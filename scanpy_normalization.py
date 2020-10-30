@@ -82,7 +82,10 @@ def main():
     )
 
     if method == 'quantile':
-        adata = quantile_normalization(adata.X.toarray())
+        adata2 = quantile_normalization(adata.X.toarray())
+        adata2.var_names = adata.var_names.tolist()
+        adata2.obs_names = adata.obs_names.tolist()
+        adata = adata2
     elif method == 'scanpy':
         sc.pp.normalize_total(adata)
     else:

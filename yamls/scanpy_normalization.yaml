@@ -11,6 +11,8 @@ meta:
     Cell normalization is a common pre-processing technique that eliminates the
     unwanted variation between the cells caused by the different library sizes and
     different data distribution.
+
+    The field currently lacks agreement as to which normalization method is the best. We used quantile normalization as it had good reputations in bulk gene expression assays (arrays and RNA-Seq). For certain experiments, it makes sense to apply quantile normalization especially if experiments are run in exactly the same manner. It will remove the deviations due to potential biasing during the experimental setup procedures (perhaps reagents were not mixed correctly, certain data-taking procedures had variation, etc.). It may be not ideal to apply to different biological samples.
 endpoints:
   backend:
     type: docker

@@ -1,9 +1,9 @@
-id: official_py_docker-{VER}
+id: scanpynormalization-{VER}
 
 meta:
   maintainer:
-    name: Xun Zhu
-    email: zhuxun@gmail.com
+    name: GranatumX
+    email: lana.garmire.group@gmail.com
 
 gboxes:
   - ./yamls/scanpy_normalization.yaml
