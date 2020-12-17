@@ -76,7 +76,7 @@ def main():
 
     make_plot(adata[sampled_cells_idxs, :], log_trans=log_trans_when_plot)
     gn.add_current_figure_to_results(
-        'Before normalization: Each bar in the box plot represents one cell. Only cells between the 5th and 95th percentile are shown.',
+        'Before normalization: Each bar in the box plot represents one cell.',
         height=350,
         dpi=75 * 40 / max(40, num_cells_to_sample)
     )
@@ -93,7 +93,7 @@ def main():
 
     make_plot(adata[sampled_cells_idxs, :], log_trans=log_trans_when_plot)
     gn.add_current_figure_to_results(
-        'After normalization: Each bar in the box plot represents one cell. Only cells between the 5th and 95th percentile are shown.',
+        'After normalization: Each bar in the box plot represents one cell.',
         height=350,
         dpi=75 * 40 / max(40, num_cells_to_sample)
     )
