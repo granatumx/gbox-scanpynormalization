@@ -31,6 +31,8 @@ frontend:
       choices:
         - value: quantile
           label: Quantile normalization
+        - value: quantile_df
+          label: Quantile normalization with dataframes
         - value: scanpy
           label: Scanpy default normalization
       injectInto: method

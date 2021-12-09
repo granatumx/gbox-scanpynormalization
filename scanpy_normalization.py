@@ -60,6 +60,26 @@ def quantile_normalization(mat):
     #return normalized.tolist()
     return sc.AnnData(csc_matrix(normalized))
 
+def pandas_from_ann_data(adata):
+    matrix = adata.X.T.toarray().tolist()
+    sampleIds = adata.obs_names.tolist()
+    geneIds = adata.var_names.tolist()
+    sparse_matrix = coo_matrix(matrix)
+    df = pd.DataFrame.sparse.from_spmatrix(sparse_matrix, index=geneIds, columns=sampleIds)
+    return df
+
+def ann_from_pandas(df):
+    matrix = df.where((pd.notnull(df)), 0).values.tolist()
+    geneIds = df.index.values.tolist()
+    sampleIds = df.columns.values.tolist()
+
+    sparse_matrix = coo_matrix(matrix).tocsc()
+    adata = sc.AnnData(sparse_matrix.transpose())
+
+    adata.var_names = geneIds
+    adata.obs_names = sampleIds
+    return adata
+ 
 
 def main():
     gn = Granatum()
@@ -79,13 +99,20 @@ def main():
         'Before normalization: Each bar in the box plot represents one cell.',
         height=350,
         dpi=75 * 40 / max(40, num_cells_to_sample)
-    )
+    ) 
 
     if method == 'quantile':
         adata2 = quantile_normalization(adata.X.toarray())
         adata2.var_names = adata.var_names.tolist()
         adata2.obs_names = adata.obs_names.tolist()
         adata = adata2
+    elif method == 'quantile_df':
+        df = pandas_from_ann_data(adata)
+        df_sorted = pd.DataFrame(np.sort(df.values, axis=0), index=df.index, columns=df.columns)
+        df_mean = df_sorted.mean(axis=1)
+        df_mean.index = np.arange(1, len(df_mean) + 1)
+        df_qn = df.rank(method="min").stack().astype(int).map(df_mean).unstack()
+        adata = ann_from_pandas(df_qn)
     elif method == 'scanpy':
         sc.pp.normalize_total(adata)
     else:
