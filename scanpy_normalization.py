@@ -50,7 +50,8 @@ def quantile_normalization(mat):
     # double argsort for getting the corresponding ranks for
     # each element in the vector
 
-    rank_mat = np.argsort(np.argsort(mat, 1), 1, kind='stable')
+    # rank_mat = np.argsort(np.argsort(mat, 1), 1, kind='stable')
+    rank_mat = np.argsort(np.argsort(mat, 1), 1)
     medians = np.median(np.sort(mat, 1), 0)
     normalized = np.zeros_like(mat)
 
