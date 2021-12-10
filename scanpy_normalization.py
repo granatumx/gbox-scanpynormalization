@@ -94,7 +94,8 @@ def main():
     if num_cells_to_sample > adata.shape[0]:
         num_cells_to_sample = adata.shape[0]
 
-    sampled_cells_idxs = np.sort(np.random.choice(adata.shape[0], num_cells_to_sample, replace=False))
+    # sampled_cells_idxs = np.sort(np.random.choice(adata.shape[0], num_cells_to_sample, replace=False))
+    sampled_cells_idxs = np.arange(0, min(num_cells_to_sample, adata.shape[0]), 1)
 
     make_plot(adata[sampled_cells_idxs, :], log_trans=log_trans_when_plot)
     gn.add_current_figure_to_results(
