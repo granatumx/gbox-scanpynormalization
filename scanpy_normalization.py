@@ -110,7 +110,7 @@ def main():
         adata = adata2
     elif method == 'quantile_df':
         df = pandas_from_ann_data(adata)
-        df_sorted = pd.DataFrame(np.sort(df.values, axis=0), index=df.index, columns=df.columns)
+        df_sorted = pd.DataFrame(np.sort(df.values, axis=0, kind='stable'), index=df.index, columns=df.columns)
         df_mean = df_sorted.mean(axis=1)
         df_mean.index = np.arange(1, len(df_mean) + 1)
         df_qn = df.rank(method="min").stack().astype(int).map(df_mean).unstack()
