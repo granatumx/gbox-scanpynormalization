@@ -127,7 +127,7 @@ def main():
         adata = ann_from_pandas(df_qn)
     elif method == 'rank':
         df = pandas_from_ann_data(adata)
-        df = rank_normalization(df.copy(), added_noise=0.1, np.random.default_rng(seed))
+        df = rank_normalization(df.copy(), added_noise=0.1, rng=np.random.default_rng(seed))
         adata = ann_from_pandas(df)
     elif method == 'scanpy':
         sc.pp.normalize_total(adata)
