@@ -33,6 +33,9 @@ frontend:
           label: Quantile normalization
         - value: quantile_df
           label: Quantile normalization with dataframes
+        - value: rank
+          label: Rank normalization
+          description: Note, a small Gaussian noise is added using the random seed to break ties
         - value: scanpy
           label: Scanpy default normalization
       injectInto: method
@@ -45,6 +48,12 @@ frontend:
       description: >-
         Plotting too many cells in the same bar-plot will render the plot
         intelligible.
+    - type: seed
+      label: Seed
+      default: 13513
+      injectInto: seed
+      description: >-
+        Small noise may be used to ensure uniform and reproducible data (for example, with rank normalization)
   exports:
     - kind: assay
       extractFrom: Normalized assay

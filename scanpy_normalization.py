@@ -83,6 +83,13 @@ def ann_from_pandas(df):
     adata.obs_names = sampleIds
     return adata
  
+def order_of_elems(test1, added_noise=0.1, rng=np.random.default_rng(0)):
+    test1 = (test1+rng.normal(0, added_noise, test1.shape[0])).sort_values(kind="stable", ascending=False)
+    test1.values[:] = np.arange(test1.shape[0])
+    return test1.sort_index(kind="stable")
+
+def rank_normalization(data, added_noise=0.1, rng=np.random.default_rng(0)):
+    return data.T.apply(order_of_elems, added_noise=added_noise, rng=rng).T
 
 def main():
     gn = Granatum()
@@ -91,6 +98,7 @@ def main():
     num_cells_to_sample = gn.get_arg('num_cells_to_sample')
     method = gn.get_arg('method')
     log_trans_when_plot = gn.get_arg('log_trans_when_plot')
+    seed = gn.get_arg('seed')
 
     if num_cells_to_sample > adata.shape[0]:
         num_cells_to_sample = adata.shape[0]
@@ -117,6 +125,10 @@ def main():
         df_mean.index = np.arange(1, len(df_mean) + 1)
         df_qn = df.rank(method="min").stack().astype(int).map(df_mean).unstack()
         adata = ann_from_pandas(df_qn)
+    elif method == 'rank':
+        df = pandas_from_ann_data(adata)
+        df = rank_normalization(df.copy(), added_noise=0.1, np.random.default_rng(seed)):
+        adata = ann_from_pandas(df)
     elif method == 'scanpy':
         sc.pp.normalize_total(adata)
     else:
